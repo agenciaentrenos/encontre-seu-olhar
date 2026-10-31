@@ -23,7 +23,7 @@
 
   <header class="sticky top-0 z-30 border-b border-stone-800 bg-stone-950/90 backdrop-blur">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-      <a href="./" class="text-sm font-bold uppercase tracking-widest text-stone-200">← Encontre a Sua Fotografia</a>
+      <a href="./" class="text-sm font-bold uppercase tracking-widest text-stone-200">← Encontre Seu Olhar</a>
       <span class="text-xs font-semibold uppercase tracking-widest text-amber-400">Portfólio</span>
     </div>
   </header>
@@ -124,4 +124,44 @@
         document.body.classList.remove('overflow-hidden');
       }
 
-      thumbnails.
+      thumbnails.forEach(function (thumbnail, index) {
+        thumbnail.addEventListener('click', function () {
+          openLightbox(index);
+        });
+      });
+
+      closeButton.addEventListener('click', closeLightbox);
+      previousButton.addEventListener('click', function () {
+        show(active - 1);
+      });
+      nextButton.addEventListener('click', function () {
+        show(active + 1);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (box.classList.contains('hidden')) return;
+        if (event.key === 'Escape') closeLightbox();
+        if (event.key === 'ArrowLeft') show(active - 1);
+        if (event.key === 'ArrowRight') show(active + 1);
+      });
+
+      box.addEventListener('click', function (event) {
+        if (event.target === box) closeLightbox();
+      });
+
+      box.addEventListener('touchstart', function (event) {
+        startX = event.changedTouches[0].clientX;
+      });
+
+      box.addEventListener('touchend', function (event) {
+        const endX = event.changedTouches[0].clientX;
+        const difference = endX - startX;
+        if (Math.abs(difference) > 50) {
+          if (difference > 0) show(active - 1);
+          else show(active + 1);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
